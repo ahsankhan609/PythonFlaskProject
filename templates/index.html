@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Understanding Flask Templates & Static Files {% endblock title %}
+
+
+{% block content %}
+
+<h1>Here is the Index Page</h1>
+<h3><a href="{{ url_for('other') }}">Other Page</a></h3>
+<h3><a href="{{ url_for('form') }}">form Page</a></h3>
+    <p>First, we see HTML Templates rendering</p>
+
+    <h3>Greetings - {{ content.greeting }}</h3>
+    <h3>Greetings - {{ content.name }}</h3>
+    
+<ul>
+    {% for num in content.my_list %}
+    <li>{{ num }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

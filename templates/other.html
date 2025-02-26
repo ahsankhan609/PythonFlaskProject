@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Jinja Filters {% endblock title %}
+
+{% block content %}
+<h1>This is other's Page.</h1>
+<h3><a href="{{ url_for('index') }}">Index Page</a></h3>
+<h3><a href="{{ url_for('form') }}">form Page</a></h3>
+<h2>Let's Learn Jinja Filters.</h2>
+<p>Normal Text : {{ content }}</p>
+<p>Upper Text : {{ content|upper }}</p>
+<p>Lower Text : {{ content|lower }}</p>
+<p>Reverse Text with own custom filter : {{ content|reverse_string }}</p>
+<p>Bold 5th Word in Paragraph with own custom filter : {{ content|bold_5th|safe }}</p>
+{% endblock content %}
