@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -29,7 +29,24 @@ def add(numbers: str) -> str:
         return "Please provide valid integer values.Dont use '/' in the end."
 
 
+@app.route('/my_route', methods=['POST', 'GET'])
+def my_route():
+    # Get query parameters (e.g., ?name=John&age=30)
+    name = request.args.get('name')  # Get 'name' parameter from query string
+    age = request.args.get('age')    # Get 'age' parameter from query string
+
+    # Get form data
+    if request.method == 'POST':
+        # Handle POST request
+        return 'This is a POST request'
+    else:
+        # Return the values in the response
+        return f"This is a Get Request . Name: {name}, Age: {age}"
+    # use this URL for example
+    # http://localhost:5555/my_route?name=ali&age=42
+
+
 # Configure Endpoint
 if __name__ == '__main__':
     # when run on Production make it False
-    app.run(host='0.0.0.0', port=5555, debug=True)
+    app.run(host='localhost', port=5555, debug=True)
