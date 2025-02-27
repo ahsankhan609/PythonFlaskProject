@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Understanding Forms,POST and Files {% endblock title %}
+
+
+{% block content %}
+<h1>Here is the FILES upload Page</h1>
+<form method = 'POST' action="{{ url_for('file_upload') }}" enctype = "multipart/form-data">
+    <div class="mb-3">
+        <label for="formFileMultiple" class="form-label">Multiple files input example</label>
+
+        <input class="form-control" type="file" name='file' accept='image/*,.pdf,.xls,.doc' id="formFileMultiple" multiple required>
+
+      </div>
+      <input type="submit" value="Upload File">
+</form>
+{% if file_url %}
+        <h2>Uploaded File:</h2>
+        {% if file_is_image %}
+            <img src="{{ file_url }}" alt="Uploaded Image" style="max-width: 400px;">
+        {% else %}
+            <p>Download the file: <a href="{{ file_url }}" target="_blank">{{ file_url }}</a></p>
+        {% endif %}
+    {% endif %}
+{% endblock content %}
