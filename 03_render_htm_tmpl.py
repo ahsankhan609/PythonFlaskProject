@@ -10,7 +10,7 @@ def index() -> str:
     pg_content: dict[str, Any] = {
         'greeting': 'Good Morning',
         'name': 'John Smith',
-        'my_list': [10, 20, 30, 40, 50, 'Python', 'Jinja2', 'flask', 'djnago', 'wsgi', 'postgresql', 'sqlite']
+        'my_list': [10, 20, 30, 40, 50, 'Python', 'Jinja2', 'flask', 'django', 'wsgi', 'postgresql', 'sqlite']
     }
     return render_template('index.html', content=pg_content)
 
@@ -21,20 +21,6 @@ def other() -> str:
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
     '''
     return render_template('other.html', content=pg_text)
-
-
-@app.route('/form', methods=['GET', 'POST'])
-def form() -> str:
-    user_data = None
-    if request.method == 'POST':
-        raw_name: str | None = request.form.get('first_name', '').strip()
-        raw_email: str | None = request.form.get('email', '').strip()
-        if raw_name and raw_email and '@' in raw_email:
-            user_data: dict[str, str] = {
-                'name': raw_name,
-                'email': raw_email,
-            }
-    return render_template('form.html', context=user_data)
 
 # creating our custom filter
 

@@ -17,14 +17,18 @@ This a Full Flask Project. From Basics to Advance concepts.
 - [Jinja2 - Math](https://jinja.palletsprojects.com/en/stable/templates/#math)
 - [Jinja2 - Comparisons](https://jinja.palletsprojects.com/en/stable/templates/#comparisons)
 
+## WTForms
+
+- [Documentation](https://wtforms.readthedocs.io/en/3.2.x/)
+
 ## Course Resources
 
-- [FLASK web development with Sheetal](https://www.youtube.com/playlist?list=PL2HQEyTmPppGlANLZS0quGmdNc3FTdi-8) 📚 Sep 17, 2021
+- [Flask Tutorial [HINDI] Kritim Yantra](https://www.youtube.com/playlist?list=PL19fiuet8c3mCnEmLne9TkNbPRC95-FCe) 📚 Feb 23, 2025
+- [Learning Flask with Julian Nash](https://www.youtube.com/playlist?list=PLF2JzgCW6-YY_TZCmBrbOpgx5pSNBD0_L) 📚 Mar 28, 2019
 - [Blueprints & Using Multiple Python Files](https://www.youtube.com/watch?v=WteIH6J9v64) 📚 Nov 19, 2019
 - [Flask Blueprints Make Your Apps Modular & Professional](https://www.youtube.com/watch?v=_LMiUOYDxzE) 📚 Apr 24, 2023
 - [Organizing Flask Projects: Blueprints and Templates Explained [HINDI]](https://www.youtube.com/watch?v=w6v9A5peQT8) 📚 Nov 20, 2023
 - [Flask Blueprint and MySQL: Step-by-Step Integration Tutorial [HINDI]](https://www.youtube.com/watch?v=03ZNhsgnFpk) 📚 Nov 24, 2023
-- [Flask Tutorial [HINDI] Kritim Yantra](https://www.youtube.com/playlist?list=PL19fiuet8c3mCnEmLne9TkNbPRC95-FCe) 📚 Feb 23, 2025
 
 ## Learning outcomes
 
@@ -114,4 +118,18 @@ from blog import blog
 app.register_blueprint(blog)
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555, debug=True)
+```
+
+### Adding Static folder
+
+add this to `html.jinja2` template for rendering `tomato.jpg` image from `images folder` in `static folder` in `root` of project of directory
+
+```html
+<img
+  src="{{ url_for('static', filename='images/tomato.jpg')}}"
+  alt="image-description"
+  class="img-fluid}"
+  style="max-width: 60%; height: 50%"
+  loading="lazy}"
+/>
 ```

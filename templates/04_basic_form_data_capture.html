@@ -3,8 +3,7 @@
 {% block title %}Bootstrap Form {% endblock title %}
 
 {% block content %}
-<h3><a href="{{ url_for('index') }}">Index Page</a></h3>
-<h3><a href="{{ url_for('other') }}">other Page</a></h3>
+
 <form method = 'POST' action = {{ url_for('form')}}>
     
   <div class="mb-3">
@@ -18,13 +17,27 @@
     </div>
     <button type="submit" value='submit' class="btn btn-primary">Submit</button>
   </form>
-
+<br>
   {# showing the form data if available#}
   
-  {% if context %}
+{% if context %}
+  <div class="alert alert-success" role="alert">
     <p>Thanks for providing us your details:</p>
-    <p>Name: {{ context['name'] }}</p>
-    <p>Email: {{ context['email'] }}</p>
-  {% endif %}
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ context['name'] }}</td>
+      <td>{{ context['email'] }}</td>
+    </tr>
+    </tbody>
+</table>
+  </div>
+{% endif %}
 
 {% endblock content %}

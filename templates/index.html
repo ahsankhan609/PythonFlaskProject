@@ -3,6 +3,16 @@ Static Files {% endblock title %} {% block content %}
 
 <h1>Here is the Index Page</h1>
 
+{# here we insert the static files such as images#}
+
+<img
+  src="{{ url_for('static', filename='images/tomato.jpg')}}"
+  alt="image-description"
+  class="img-fluid}"
+  style="max-width: 60%; height: 50%"
+  loading="lazy}"
+/>
+
 <p>Here we will learn these topics:</p>
 <ul>
   <li>How to make internal pages links</li>
@@ -12,8 +22,15 @@ Static Files {% endblock title %} {% block content %}
 
 <p>How to make internal pages links:</p>
 
-<h3><a href="{{ url_for('other') }}">Other Page</a></h3>
-<h3><a href="{{ url_for('form') }}">form Page</a></h3>
+<h3>
+  <a href="{{ url_for('index') }}">Go to Home Page.</a>
+</h3>
+<h3>
+  <a href="{{ url_for('other') }}"
+    >Jinja2 Template working with builtin and custom filters.</a
+  >
+</h3>
+<h3><a href="{{ url_for('form') }}">Simple data capture with Forms.</a></h3>
 
 <p>how to render dictionary provided in the context</p>
 {# it returns the dictionary provided in the context #}

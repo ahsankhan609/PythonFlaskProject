@@ -2,10 +2,15 @@
 block content %}
 
 <h1>This is other's Page.</h1>
-<h3><a href="{{ url_for('index') }}">Index Page</a></h3>
-<h3><a href="{{ url_for('form') }}">form Page</a></h3>
-
-<h2>Let's Learn Jinja Filters with paragraph.</h2>
+<h3>
+  <a href="{{ url_for('index') }}">Go to Home Page.</a>
+</h3>
+<h3>
+  <a href="{{ url_for('other') }}"
+    >Jinja2 Template working with builtin and custom filters.</a
+  >
+</h3>
+<h3><a href="{{ url_for('form') }}">Simple data capture with Forms.</a></h3>
 
 <p>Normal Text : {{ content }}</p>
 <p>Upper Text : {{ content|upper }}</p>
