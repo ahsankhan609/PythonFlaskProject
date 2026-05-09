@@ -6,11 +6,7 @@ This a Full Flask Project. From Basics to Advance concepts.
 
 - []()
 
----
-
 ## Course Notes
 
 - Note1
 - note2
-  
----
