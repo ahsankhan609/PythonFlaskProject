@@ -19,16 +19,20 @@ This a Full Flask Project. From Basics to Advance concepts.
 
 ## WTForms
 
-- [Documentation](https://wtforms.readthedocs.io/en/3.2.x/)
+- [Documentation](https://flask-wtf.readthedocs.io/en/1.2.x/)
+- [PYPi](https://pypi.org/project/Flask-WTF/)
 
 ## Course Resources
 
 - [Flask Tutorial [HINDI] Kritim Yantra](https://www.youtube.com/playlist?list=PL19fiuet8c3mCnEmLne9TkNbPRC95-FCe) 📚 Feb 23, 2025
+- [Flask Series Corey Schafer](https://www.youtube.com/playlist?list=PL-osiE80TeTs4UjLw5MM6OjgkjFeUxCYH) 📚 
 - [Learning Flask with Julian Nash](https://www.youtube.com/playlist?list=PLF2JzgCW6-YY_TZCmBrbOpgx5pSNBD0_L) 📚 Mar 28, 2019
 - [Blueprints & Using Multiple Python Files](https://www.youtube.com/watch?v=WteIH6J9v64) 📚 Nov 19, 2019
 - [Flask Blueprints Make Your Apps Modular & Professional](https://www.youtube.com/watch?v=_LMiUOYDxzE) 📚 Apr 24, 2023
 - [Organizing Flask Projects: Blueprints and Templates Explained [HINDI]](https://www.youtube.com/watch?v=w6v9A5peQT8) 📚 Nov 20, 2023
 - [Flask Blueprint and MySQL: Step-by-Step Integration Tutorial [HINDI]](https://www.youtube.com/watch?v=03ZNhsgnFpk) 📚 Nov 24, 2023
+
+- [Starter template](https://flask.palletsprojects.com/en/stable/quickstart/)
 
 ## Learning outcomes
 
@@ -132,4 +136,42 @@ add this to `html.jinja2` template for rendering `tomato.jpg` image from `images
   style="max-width: 60%; height: 50%"
   loading="lazy}"
 />
+```
+
+### Basic Routes variable Rules
+
+You can add variable sections to a URL by marking sections with `<variable_name>`. Your function then receives the `<variable_name>` as a keyword argument. Optionally, you can use a converter to specify the type of the argument like `<converter:variable_name>`
+
+```python
+from markupsafe import escape
+
+@app.route('/user/<username>')
+def show_user_profile(username):
+    # show the user profile for that user
+    return f'User {escape(username)}'
+
+@app.route('/post/<int:post_id>')
+def show_post(post_id):
+    # show the post with the given id, the id is an integer
+    return f'Post {post_id}'
+
+@app.route('/path/<path:subpath>')
+def show_subpath(subpath):
+    # show the subpath after /path/
+    return f'Subpath {escape(subpath)}'
+```
+
+#### Converter Type
+
+|string | (default) accepts any text without a slash|
+|-------|-------------------------------------------|
+|int |accepts positive integers|
+|float | accepts positive floating point values
+|path | like string but also accepts slashes
+|UUID | accepts UUID strings
+
+#### Static Files
+
+```html
+url_for('static', filename='style.css')
 ```
