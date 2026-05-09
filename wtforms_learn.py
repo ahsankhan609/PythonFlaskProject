@@ -1,6 +1,6 @@
 from typing import Any
 from markupsafe import escape
-from flask import Flask, render_template
+from flask import Flask, render_template, flash, redirect, url_for
 
 from forms import RegistrationForm, LoginForm
 
@@ -14,6 +14,13 @@ posts: list[dict[str, str]] = [
         'title': 'Blog Post 1',
         'content': 'First post content',
         'date_posted': 'April 20, 2018'
+
+    },
+    {
+        'author': 'Jane Doe',
+        'title': 'Blog Post 2',
+        'content': 'Second post content',
+        'date_posted': 'April 21, 2018'
 
     },
     {
@@ -40,7 +47,8 @@ def hello(username: str) -> str:
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        return f'Account created for {form.username.data}!'
+        flash(f'Account created for {form.username.data}!', 'success')
+        return redirect(url_for('index'))
     return render_template('register.html', title='WTForms Registration', form=form)
 
 
@@ -48,7 +56,7 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        return f'Logged in as {form.email.data}!'
+        flash(f'Logged in as {form.email.data}!', 'success')
     return render_template('login.html', title='WTForms Login', form=form)
 
 
