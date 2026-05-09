@@ -10,16 +10,16 @@ def index():
     if request.method == 'GET':
         return render_template('form_post_files.html')
     elif request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-        user_data = {
+        email: str | None = request.form.get('email')
+        password: str | None = request.form.get('password')
+        user_data: dict[str, str | None] = {
             'email': email,
             'pass': password,
         }
         if email == 'abc@gmail.com' and password == 'abc123':
             return render_template('form_post_files.html', content=user_data)
         else:
-            return "Failed"
+            return "Invalid Username or Password."
     else:
         return ""
 
@@ -80,4 +80,4 @@ def file_upload():
 # Configure Endpoint
 if __name__ == '__main__':
     # when run on Production make it False
-    app.run(host='localhost', port=5555, debug=True)
+    app.run(host='0.0.0.0', port=5555, debug=True)
