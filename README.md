@@ -163,12 +163,12 @@ def show_subpath(subpath):
 
 #### Converter Type
 
-|string | (default) accepts any text without a slash|
-|-------|-------------------------------------------|
-|int |accepts positive integers|
-|float | accepts positive floating point values
-|path | like string but also accepts slashes
-|UUID | accepts UUID strings
+| string | (default) accepts any text without a slash |
+| ------ | ------------------------------------------ |
+| int    | accepts positive integers                  |
+| float  | accepts positive floating point values     |
+| path   | like string but also accepts slashes       |
+| UUID   | accepts UUID strings                       |
 
 #### Static Files
 
