@@ -1,44 +1,54 @@
-{% extends "base.html" %} {% block title %}Understanding Forms,POST and Files {%
-endblock title %} {% block content %}
-<h1>Here is the FORM,POST & FILES Page</h1>
+{% extends "base.html" %}
 
-<form method="POST" action="{{ url_for('index') }}">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input
-      type="email"
-      name="email"
-      class="form-control"
-      id="exampleInputEmail1"
-      aria-describedby="emailHelp"
-      placeholder="Enter email"
-      required
-    />
-    <small id="emailHelp" class="form-text text-muted"
-      >We'll never share your email with anyone else.</small
-    >
+{% block title %}Understanding Forms, POST and Files{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <h1 class="mb-4">FORM, POST &amp; FILES</h1>
+
+    {% if form_context.errors %}
+    <div class="alert alert-danger" role="alert">
+      <ul class="mb-0">
+        {% for message in form_context.errors %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('index') }}" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", placeholder="Enter email") }}
+            {% for error in form.email.errors %}
+            <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+            <small class="form-text text-muted">
+              We will never share your email with anyone else.
+            </small>
+          </div>
+          <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control", placeholder="Password") }}
+            {% for error in form.password.errors %}
+            <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+          </div>
+          {{ form.submit(class="btn btn-primary") }}
+        </form>
+      </div>
+    </div>
+
+    {% if form_context.success and form_context.email %}
+    <div class="alert alert-success mt-4" role="alert">
+      <p class="mb-0">Email address: {{ form_context.email }}</p>
+      <p class="mb-0 mt-2">You have entered correct data.</p>
+    </div>
+    {% endif %}
   </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input
-      type="password"
-      name="password"
-      class="form-control"
-      id="exampleInputPassword1"
-      placeholder="Password"
-      required
-    />
-  </div>
-
-  <button type="submit" value="Login" class="btn btn-primary">Submit</button>
-</form>
-
-{% if content %}
-
-<p>Email Address :{{ content['email'] }}</p>
-<p>Password :{{ content['pass'] }}</p>
-
-<div class="alert alert-success" role="alert">
-  You hav entered Correct Data.
 </div>
-{% endif %} {% endblock content %}
+{% endblock content %}
