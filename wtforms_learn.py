@@ -2,6 +2,7 @@ from werkzeug.wrappers.response import Response
 from markupsafe import escape
 from flask import Flask, render_template, flash, redirect, url_for
 
+# project imports
 from forms import RegistrationForm, LoginForm
 
 app: Flask = Flask(__name__, template_folder='templates',
