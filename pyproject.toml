@@ -1,19 +1,35 @@
 [project]
 name = "pythonflaskproject"
 version = "0.1.0"
-description = "Add your description here"
+description = "Flask learning project: routes, Jinja2 templates, forms, WTForms, and file uploads."
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = [
-    "blinker==1.9.0",
-    "click==8.1.8",
-    "colorama==0.4.6",
-    "flask==3.1.0",
-    "flask-wtf>=1.3.0",
-    "itsdangerous==2.2.0",
-    "jinja2==3.1.5",
-    "markupsafe==3.0.2",
-    "sqlalchemy>=2.0.49",
-    "werkzeug==3.1.3",
-    "email-validator>=2.0.0",
+license = { text = "MIT" }
+authors = [{ name = "John Smith" }]
+keywords = ["flask", "jinja2", "wtforms", "web", "education"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Flask",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
+
+# Direct dependencies only (transitives resolved by uv).
+dependencies = [
+    "flask>=3.1.0,<4",
+    "flask-wtf>=1.3.0",
+    "wtforms>=3.2.2",
+    "email-validator>=2.3.0",
+    "sqlalchemy>=2.0.49",
+]
+
+[tool.uv]
+package = false
+
+# Run a lesson app (examples):
+#   uv run python 01_basic_routes.py
+#   uv run python form_post_files.py
+#   uv run python 04_basic_form_data_capture.py

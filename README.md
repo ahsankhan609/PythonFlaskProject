@@ -18,10 +18,11 @@ This a Full Flask Project. From Basics to Advance concepts.
 - [Jinja2 - Math](https://jinja.palletsprojects.com/en/stable/templates/#math)
 - [Jinja2 - Comparisons](https://jinja.palletsprojects.com/en/stable/templates/#comparisons)
 
-## WTForms
+## WTForms | #?!
 
 - [Documentation](https://flask-wtf.readthedocs.io/en/1.2.x/)
 - [PYPi](https://pypi.org/project/Flask-WTF/)
+- [Documentation](https://wtforms.readthedocs.io/en/3.2.x/)
 
 ## Course Resources
 

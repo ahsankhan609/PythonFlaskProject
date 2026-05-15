@@ -1,10 +1,11 @@
-from typing import Any
+from werkzeug.wrappers.response import Response
 from markupsafe import escape
 from flask import Flask, render_template, flash, redirect, url_for
 
 from forms import RegistrationForm, LoginForm
 
-app = Flask(__name__, template_folder='templates', static_folder='static')
+app: Flask = Flask(__name__, template_folder='templates',
+                   static_folder='static')
 
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
@@ -34,7 +35,7 @@ posts: list[dict[str, str]] = [
 
 
 @app.route('/', methods=['GET'])
-def index():
+def index() -> str:
     return render_template('wtforms_learn.html', title='WTForms Learning', posts=posts)
 
 
@@ -44,8 +45,8 @@ def hello(username: str) -> str:
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm()
+def register() -> Response | str:
+    form: RegistrationForm = RegistrationForm()
     if form.validate_on_submit():
         flash(f'Account created for {form.username.data}!', 'success')
         return redirect(url_for('index'))
@@ -53,12 +54,16 @@ def register():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
+def login() -> Response | str:
+    form: LoginForm = LoginForm()
     if form.validate_on_submit():
         flash(f'Logged in as {form.email.data}!', 'success')
     return render_template('login.html', title='WTForms Login', form=form)
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    port = 5000
+    url: str = f'http://127.0.0.1:{port}/'
+    print(f'\n -> Open: {url}\n')
+    # when run on Production make debug = False
+    app.run(host='127.0.0.1', port=port, debug=True)
