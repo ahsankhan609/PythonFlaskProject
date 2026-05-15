@@ -5,6 +5,7 @@ This a Full Flask Project. From Basics to Advance concepts.
 ## Jinja2 Template - Documentation
 
 - [Jinja2 - Template Designer Documentation](https://jinja.palletsprojects.com/en/stable/templates/)
+- [Primer on Jinja Templating](https://realpython.com/primer-on-jinja-templating/)
 - [Jinja2 - Base Template](https://jinja.palletsprojects.com/en/stable/templates/#base-template)
 - [Jinja2 - Super Blocks](https://jinja.palletsprojects.com/en/stable/templates/#super-blocks)
 
@@ -33,6 +34,19 @@ This a Full Flask Project. From Basics to Advance concepts.
 - [Flask Blueprint and MySQL: Step-by-Step Integration Tutorial [HINDI]](https://www.youtube.com/watch?v=03ZNhsgnFpk) 📚 Nov 24, 2023
 
 - [Starter template](https://flask.palletsprojects.com/en/stable/quickstart/)
+
+## RealPython - Flask Series
+
+- [Flask Project Structure: Build a Scalable Web App](https://realpython.com/flask-project/) Dec 13, 2023
+- [Enhance Your Flask Web Project With a Database](https://realpython.com/flask-database/) Dec 18, 2023
+- [Add Logging and Notification Messages to Flask Web Projects](https://realpython.com/flask-logging-messages/) Dec 20, 2023
+
+## RealPython - Python REST APIs With Flask
+
+- [Connexion, and SQLAlchemy – Part 1](https://realpython.com/flask-connexion-rest-api/) Nov 14, 2022
+- [Connexion, and SQLAlchemy – Part 2](https://realpython.com/flask-connexion-rest-api-part-2/) Nov 16, 2022
+- [Connexion, and SQLAlchemy – Part 3](https://realpython.com/flask-connexion-rest-api-part-3/) Nov 21, 2022
+- [Episode 134: Building Python REST APIs With Flask & Structuring Pull Requests](https://realpython.com/podcasts/rpp/134/) Nov 25, 2022
 
 ## Learning outcomes
 
