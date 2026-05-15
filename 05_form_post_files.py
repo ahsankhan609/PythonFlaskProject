@@ -18,7 +18,7 @@ configure_app(app)
 
 MAX_EMAIL_LENGTH: Final = 254
 DEMO_EMAIL: Final = 'abc@gmail.com'
-DEMO_PASSWORD: Final = 'abc123'
+DEMO_PASSWORD: Final = 'abc123456789'
 
 _CONTROL_CHARS = re.compile(r'[\x00-\x1f\x7f]')
 
@@ -87,7 +87,7 @@ def index() -> str:
                 str(form.email.data), max_length=MAX_EMAIL_LENGTH)
 
     return render_template(
-        'form_post_files.html', form=form, form_context=form_context)
+        '05_form_post_files.html', form=form, form_context=form_context)
 
 
 # Define the allowed file extensions for images

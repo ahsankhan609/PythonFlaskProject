@@ -189,14 +189,9 @@ def login() -> WerkzeugResponse | str:
     if form.validate_on_submit():
         email: str = (form.email.data or '').strip().lower()
         user: User | None = User.query.filter_by(email=email).first()
-        # Use a constant-time check regardless of whether the user exists to
-        # avoid leaking which emails are registered via timing differences.
-        dummy_hash = '$2b$12$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-        candidate_hash: str = user.password_hash if user else dummy_hash  # type: ignore[union-attr]
-        password_ok: bool = bcrypt.check_password_hash(  # type: ignore[assignment]
-            candidate_hash, form.password.data or ''
-        )
-        if not user or not password_ok:
+        if not user or not bcrypt.check_password_hash(  # type: ignore[no-untyped-call]
+            cast(str, user.password_hash), form.password.data or ''
+        ):
             flash('Invalid email or password.', 'danger')
             return render_template('login.html', title='WTForms Login', form=form)
 
