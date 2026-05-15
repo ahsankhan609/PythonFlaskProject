@@ -13,7 +13,7 @@ load_dotenv()
 
 
 def get_secret_key() -> str:
-    key = os.environ.get('FLASK_SECRET_KEY', '').strip()
+    key: str = os.environ.get('FLASK_SECRET_KEY', '').strip()
     if not key:
         raise RuntimeError(
             'FLASK_SECRET_KEY is not set. Copy .env.example to .env '
@@ -35,3 +35,18 @@ def configure_app(app: Flask) -> None:
     )
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(
         days=int(os.environ.get('SESSION_LIFETIME_DAYS', '14')))
+
+
+def configure_db(app: Flask) -> None:
+    """Configure SQLAlchemy database connection from DATABASE_URL env var.
+
+    Defaults to SQLite. Swap DATABASE_URL in .env for PostgreSQL, MySQL, etc.
+    pool_pre_ping reconnects automatically after idle-connection drops.
+    """
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+        'DATABASE_URL', 'sqlite:///wtforms_learn.db'
+    )
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        'pool_pre_ping': True,
+    }

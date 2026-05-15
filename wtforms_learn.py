@@ -6,19 +6,28 @@ from functools import wraps
 from typing import Any, Callable, Final, Literal, TypeVar, TypedDict, cast
 
 from flask import Flask, flash, redirect, render_template, session, url_for
+from flask_bcrypt import Bcrypt  # type: ignore[import-untyped]
 from markupsafe import escape
 from werkzeug.wrappers import Response as WerkzeugResponse
 
-from config import configure_app
+from config import configure_app, configure_db
 from forms import LoginForm, LogoutForm, RegistrationForm
+from models import User, db
 
 app: Flask = Flask(__name__, template_folder='templates',
                    static_folder='static')
 configure_app(app)
+configure_db(app)
+
+bcrypt: Bcrypt = Bcrypt(app)
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
 
 DEFAULT_PORT: Final[Literal[5000]] = 5000
-SESSION_EMAIL_KEY: Final[Literal['user_email']] = 'abc@gmail.com'
-SESSION_USERNAME_KEY: Final[Literal['user_username']] = 'abc123456789'
+SESSION_EMAIL_KEY: Final[Literal['user_email']] = 'user_email'
+SESSION_USERNAME_KEY: Final[Literal['user_username']] = 'user_username'
 
 F = TypeVar('F', bound=Callable[..., Any])
 
@@ -69,8 +78,8 @@ def logout_user() -> WerkzeugResponse:
     response: Response = redirect(url_for('index'))
     cookie_name: str = str(app.config.get('SESSION_COOKIE_NAME', 'session'))
     cookie_path: str = str(app.config.get('SESSION_COOKIE_PATH', '/'))
-    cookie_domain: Any | None = app.config.get('SESSION_COOKIE_DOMAIN')
-    cookie_samesite: Any | None = app.config.get('SESSION_COOKIE_SAMESITE')
+    cookie_domain: str | None = app.config.get('SESSION_COOKIE_DOMAIN')
+    cookie_samesite: str | None = app.config.get('SESSION_COOKIE_SAMESITE')
     response.delete_cookie(
         cookie_name,
         path=cookie_path,
@@ -143,11 +152,28 @@ def dashboard() -> str:
 def register() -> WerkzeugResponse | str:
     form: RegistrationForm = RegistrationForm()
     if form.validate_on_submit():
-        email = (form.email.data or '').strip().lower()
-        username = escape(form.username.data or '')
-        login_user(email=email, username=form.username.data or '',
-                   remember=False)
-        flash(f'Account created for {username}!', 'success')
+        email: str = (form.email.data or '').strip().lower()
+        username: str = (form.username.data or '').strip()
+
+        if User.query.filter_by(email=email).first():
+            flash('That email is already registered. Please log in.', 'danger')
+            return render_template('register.html', title='WTForms Registration', form=form)
+
+        if User.query.filter_by(username=username).first():
+            flash('That username is taken. Please choose another.', 'danger')
+            return render_template('register.html', title='WTForms Registration', form=form)
+
+        password_hash: str = bcrypt.generate_password_hash(
+            form.password.data or '',
+            rounds=int(os.environ.get('BCRYPT_LOG_ROUNDS', '12'))
+        ).decode('utf-8')  # type: ignore[assignment]
+        user: User = User(username=username, email=email,
+                          password_hash=password_hash)
+        db.session.add(user)
+        db.session.commit()
+
+        login_user(email=email, username=username, remember=False)
+        flash(f'Account created for {escape(username)}!', 'success')
         return redirect(url_for('dashboard'))
     return render_template(
         'register.html',
@@ -161,10 +187,22 @@ def register() -> WerkzeugResponse | str:
 def login() -> WerkzeugResponse | str:
     form: LoginForm = LoginForm()
     if form.validate_on_submit():
-        email = (form.email.data or '').strip().lower()
+        email: str = (form.email.data or '').strip().lower()
+        user: User | None = User.query.filter_by(email=email).first()
+        # Use a constant-time check regardless of whether the user exists to
+        # avoid leaking which emails are registered via timing differences.
+        dummy_hash = '$2b$12$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+        candidate_hash: str = user.password_hash if user else dummy_hash  # type: ignore[union-attr]
+        password_ok: bool = bcrypt.check_password_hash(  # type: ignore[assignment]
+            candidate_hash, form.password.data or ''
+        )
+        if not user or not password_ok:
+            flash('Invalid email or password.', 'danger')
+            return render_template('login.html', title='WTForms Login', form=form)
+
         login_user(
             email=email,
-            username=None,
+            username=user.username,
             remember=bool(form.remember.data),
         )
         flash(f'Logged in as {escape(email)}!', 'success')
@@ -182,7 +220,7 @@ def logout() -> WerkzeugResponse:
     if not form.validate_on_submit():
         flash('Invalid logout request.', 'danger')
         return redirect(url_for('index'))
-    response = logout_user()
+    response: Response = logout_user()
     flash('You have been logged out successfully.', 'info')
     return response
 
