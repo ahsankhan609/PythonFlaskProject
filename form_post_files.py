@@ -10,10 +10,11 @@ from email_validator import EmailNotValidError, validate_email
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
+from config import configure_app
 from forms import FormPostFilesLoginForm
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
-app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
+configure_app(app)
 
 MAX_EMAIL_LENGTH: Final = 254
 DEMO_EMAIL: Final = 'abc@gmail.com'

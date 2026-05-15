@@ -1,17 +1,32 @@
-{% extends "base.html" %} {% block title %}{{ title }}{% endblock title %} {%
-block content %}
-<div class="mb-4">
-  <a href="{{ url_for('register') }}" class="btn btn-primary me-2">Register</a>
-  <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
-</div>
-<h1>List all posts</h1>
-<ul>
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+<h1 class="mb-4">All posts</h1>
+
+{% if not is_logged_in %}
+<p class="text-muted">
+  <a href="{{ url_for('login') }}">Log in</a> or
+  <a href="{{ url_for('register') }}">register</a> to access your dashboard.
+</p>
+{% endif %}
+
+<div class="row g-4">
   {% for post in posts %}
-  <li>Author: {{ post['author'] }}</li>
-  <li>Title: {{ post['title'] }}</li>
-  <li>Post Content: {{ post['content'] }}</li>
-  <li>Posted on: {{ post['date_posted'] }}</li>
-  <br />
+  <div class="col-md-6">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 card-title">{{ post.title }}</h2>
+        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text text-muted small mb-0">
+          By {{ post.author }} · {{ post.date_posted }}
+        </p>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">No posts yet.</p>
   {% endfor %}
-</ul>
+</div>
 {% endblock content %}

@@ -1,96 +1,75 @@
-# project imports
-from flask_wtf import FlaskForm
+from __future__ import annotations
 
-# third party imports
-from wtforms.fields.simple import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from flask_wtf import FlaskForm
+from wtforms import BooleanField, PasswordField, StringField, SubmitField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, Regexp
+
+USERNAME_PATTERN = r"^[\w\s\-'.]+$"
 
 
 class RegistrationForm(FlaskForm):
-    """
-    Demo registration form for user sign-up, as used in wtforms_learn.py.
+    """Registration form for wtforms_learn (CSRF provided by FlaskForm)."""
 
-    Fields:
-        username: User's display name (2–20 chars).
-        email: User's email address (valid format).
-        password: User password (min 12 chars).
-        confirm_password: Should match 'password' field (min 12 chars).
-        submit: Submit button for form submission.
-
-    Example usage in Flask view:
-        form = RegistrationForm()
-        if form.validate_on_submit():
-            # handle successfully registered user, e.g.,
-            username = form.username.data
-            email = form.email.data
-            # ...
-
-    This form validates the presence and correctness of all fields,
-    requiring strong passwords and matching confirmation.
-    """
-
-    username: StringField = StringField('Username', validators=[
-        DataRequired(), Length(min=2, max=20)])
-
+    username: StringField = StringField(
+        'Username',
+        validators=[
+            DataRequired(),
+            Length(min=2, max=20),
+            Regexp(
+                USERNAME_PATTERN,
+                message='Username contains invalid characters.',
+            ),
+        ],
+    )
     email: StringField = StringField(
-        'Email', validators=[DataRequired(), Email()])
-
-    password: PasswordField = PasswordField('Password', validators=[
-        DataRequired(), Length(min=12)])
-    confirm_password: PasswordField = PasswordField('Confirm Password', validators=[
-        DataRequired(), EqualTo('password'), Length(min=12)])
-
+        'Email',
+        validators=[DataRequired(), Email(), Length(max=254)],
+    )
+    password: PasswordField = PasswordField(
+        'Password',
+        validators=[DataRequired(), Length(min=12, max=128)],
+    )
+    confirm_password: PasswordField = PasswordField(
+        'Confirm Password',
+        validators=[
+            DataRequired(),
+            EqualTo('password', message='Passwords must match.'),
+            Length(min=12, max=128),
+        ],
+    )
     submit: SubmitField = SubmitField('Sign up!')
 
 
 class LoginForm(FlaskForm):
-    """
-    Login form for demonstration purposes, as used in wtforms_learn.py.
-
-    Fields:
-        email: User's email address (must be valid format).
-        password: User password (minimum 12 characters required).
-        remember: Checkbox to enable "Remember Me" functionality.
-        submit: Submit button to log in.
-
-    Example usage in Flask view:
-        form = LoginForm()
-        if form.validate_on_submit():
-            email = form.email.data
-            password = form.password.data
-            remember = form.remember.data
-            # handle login logic...
-
-    All fields are required and validated for correct input, enforcing strong passwords.
-    """
+    """Login form for wtforms_learn (CSRF provided by FlaskForm)."""
 
     email: StringField = StringField(
-        'Email', validators=[DataRequired(), Email()])
-    password: PasswordField = PasswordField('Password', validators=[
-        DataRequired(), Length(min=12)])
+        'Email',
+        validators=[DataRequired(), Email(), Length(max=254)],
+    )
+    password: PasswordField = PasswordField(
+        'Password',
+        validators=[DataRequired(), Length(min=12, max=128)],
+    )
     remember: BooleanField = BooleanField('Remember Me')
     submit: SubmitField = SubmitField('Login')
 
 
+class LogoutForm(FlaskForm):
+    """CSRF-protected logout (POST only)."""
+
+    submit: SubmitField = SubmitField('Logout')
+
+
 class FormPostFilesLoginForm(FlaskForm):
-    """
-    Login form used in form_post_files.py for upload authentication demo.
-
-    Fields:
-        email: User's email address (must be valid format).
-        password: User password (6-128 characters).
-        submit: Submit button to log in.
-
-    Example usage in Flask view:
-        form = FormPostFilesLoginForm()
-        if form.validate_on_submit():
-            email = form.email.data
-            password = form.password.data
-            # handle login logic or file upload authentication
-    """
+    """Demo login form for form_post_files lesson."""
 
     email: StringField = StringField(
-        'Email', validators=[DataRequired(), Email()])
-    password: PasswordField = PasswordField('Password', validators=[
-        DataRequired(), Length(min=6, max=128)])
+        'Email',
+        validators=[DataRequired(), Email(), Length(max=254)],
+    )
+    password: PasswordField = PasswordField(
+        'Password',
+        validators=[DataRequired(), Length(min=6, max=128)],
+    )
     submit: SubmitField = SubmitField('Login')
