@@ -1,43 +1,64 @@
 {% extends "base.html" %}
 
-{% block title %}Bootstrap Form {% endblock title %}
+{% block title %}Bootstrap Form{% endblock title %}
 
 {% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <h1 class="mb-4">Contact details</h1>
 
-<form method = 'POST' action = {{ url_for('form')}}>
-    
-  <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
-      <input type="email" name='email' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    {% if form_context.errors %}
+    <div class="alert alert-danger" role="alert">
+      <ul class="mb-0">
+        {% for message in form_context.errors %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('form') }}" novalidate>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              value="{{ form_context.email or '' }}" required />
+            <small id="emailHelp" class="form-text text-muted">
+              We will never share your email with anyone else.
+            </small>
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">First name</label>
+            <input type="text" name="first_name" class="form-control" id="exampleInputPassword1"
+              value="{{ form_context.name or '' }}" required />
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
     </div>
 
-    <div class="mb-3">
-      <label for="exampleInputPassword1" class="form-label">First name</label>
-      <input type="text" name='first_name' class="form-control" id="exampleInputPassword1">
+    {% if form_context.name and form_context.email and not form_context.errors %}
+    <div class="alert alert-success mt-4" role="alert">
+      <p class="mb-3">Thanks for providing us your details:</p>
+      <table class="table table-bordered mb-0">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ form_context.name }}</td>
+            <td>{{ form_context.email }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <button type="submit" value='submit' class="btn btn-primary">Submit</button>
-  </form>
-<br>
-  {# showing the form data if available#}
-  
-{% if context %}
-  <div class="alert alert-success" role="alert">
-    <p>Thanks for providing us your details:</p>
-    <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Email</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>{{ context['name'] }}</td>
-      <td>{{ context['email'] }}</td>
-    </tr>
-    </tbody>
-</table>
+    {% endif %}
   </div>
-{% endif %}
-
+</div>
 {% endblock content %}
